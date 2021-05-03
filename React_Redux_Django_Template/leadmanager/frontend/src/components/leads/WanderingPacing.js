@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import ScrollableTable from "../helpers/ScrollableTable";
 import ImageCarousel from "../helpers/ImageCarousel";
-import "../../../stylesheets/Move.css";
+import "../../../stylesheets/Symptoms.css";
 import Repository from "../../../backend-connection/repository";
 import { v4 as uuidv4 } from "uuid";
 import daysjs from "dayjs";
@@ -11,12 +11,12 @@ export class WanderingPacing extends Component {
     super(props);
 
     this.state = {
-        Pacing: "",
-        Lapping: "",
-        Direct: "",
-        Random: "",
-        Image: [],
-        lastruntime: "",
+      Pacing: "",
+      Lapping: "",
+      Direct: "",
+      Random: "",
+      Image: [],
+      lastruntime: "",
     };
 
     this.defaultData = ["No data to show"];
@@ -31,12 +31,12 @@ export class WanderingPacing extends Component {
     let responseMovement = await repo.GetLocationOccurences(dataTypeToRun);
 
     this.setState({
-        Pacing: responseMovement.Pacing,
-        Lapping: responseMovement.Lapping,
-        Direct: responseMovement.Direct,
-        Random: responseMovement.Random,
-        Image: responseMovement.Images,
-        lastruntime: daysjs().format("YYYY-MM-DD hh:mm:ss A"),
+      Pacing: responseMovement.Pacing,
+      Lapping: responseMovement.Lapping,
+      Direct: responseMovement.Direct,
+      Random: responseMovement.Random,
+      Image: responseMovement.Images,
+      lastruntime: daysjs().format("YYYY-MM-DD hh:mm:ss A"),
     });
   };
 
@@ -50,15 +50,11 @@ export class WanderingPacing extends Component {
           lapping={this.state.Lapping}
           direct={this.state.Direct}
           random={this.state.Random}
-          
           key={uuidv4()}
         />
         <Analyzer clicked={this.clicked} />
         <div id="symptomContainer">
-            <MovementTrips
-                images={this.state.Image}
-                key={uuidv4()}
-            />
+          <MovementTrips images={this.state.Image} key={uuidv4()} />
         </div>
       </div>
     );
@@ -75,14 +71,15 @@ class Analyzer extends React.Component {
       <div id="overview">
         <h3>Analyze</h3>
         <hr style={{ backgroundColor: "#6699CC", borderWidth: "2px" }} />
+        <select id="dropdown">
+          <option value="Normal">Normal</option>
+          <option value="Abnormal">Abnormal</option>
+          <option value="Radical">Random</option>
+        </select>
+        <br />
         <button onClick={this.props.clicked} className="button">
           {"Run"}
         </button>
-        <select id="dropdown">
-            <option value="Normal">Normal</option>
-            <option value="Abnormal">Abnormal</option>
-            <option value="Radical">Radical</option>
-        </select>
       </div>
     );
   }
@@ -98,23 +95,21 @@ class MovementTrips extends React.Component {
       <div className="symptom">
         <h3>Movement Analysis</h3>
         <h4>Occurences</h4>
-        <ImageCarousel
-          key={uuidv4()}
-          images=
-            {this.props.images.map((image) =>(
-                <img
-                    src={`data:image/png;base64,${image}`}
-                    className="graphImage"
-                />
+        {this.props.images.length != 0 && (
+          <ImageCarousel
+            key={uuidv4()}
+            images={this.props.images.map((image) => (
+              <img
+                src={`data:image/png;base64,${image}`}
+                className="graphImageSquare"
+              />
             ))}
-        />
-
+          />
+        )}
       </div>
     );
   }
 }
-
-
 
 class Overview extends React.Component {
   render() {

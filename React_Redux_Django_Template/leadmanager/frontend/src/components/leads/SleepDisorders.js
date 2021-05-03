@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import ImageCarousel from "../helpers/ImageCarousel";
-import "../../../stylesheets/Sleep.css";
+import "../../../stylesheets/Symptoms.css";
 import Repository from "../../../backend-connection/repository";
 import { v4 as uuidv4 } from "uuid";
 import daysjs from "dayjs";
@@ -53,12 +53,12 @@ export class SleepDisorders extends Component {
         />
         <Analyzer clicked={this.clicked} />
         <div id="symptomContainer">
-            <SleepSummaryReport
-                normal_image={this.state.Normal_Image}
-                bad_image={this.state.Bad_Image}
-                random_image={this.state.Random_Image}
-                key={uuidv4()}
-            />
+          <SleepSummaryReport
+            normal_image={this.state.Normal_Image}
+            bad_image={this.state.Bad_Image}
+            random_image={this.state.Random_Image}
+            key={uuidv4()}
+          />
         </div>
       </div>
     );
@@ -91,24 +91,26 @@ class SleepSummaryReport extends React.Component {
   render() {
     return (
       <div className="symptom">
-        <h2 id="GraphTitle">Sleep Graphical Report</h2>
-        <ImageCarousel
-          key={uuidv4()}
-          images={[
-            <img
-              src={`data:image/png;base64,${this.props.normal_image}`}
-              className="graphImage"
-            />,
-            <img
-              src={`data:image/png;base64,${this.props.bad_image}`}
-              className="graphImage"
-            />,
-            <img
-              src={`data:image/png;base64,${this.props.random_image}`}
-              className="graphImage"
-            />,
-          ]}
-        />
+        <h3>Sleep Graphical Report</h3>
+        {this.props.normal_image.length != "" && (
+          <ImageCarousel
+            key={uuidv4()}
+            images={[
+              <img
+                src={`data:image/png;base64,${this.props.normal_image}`}
+                className="graphImageSquare"
+              />,
+              <img
+                src={`data:image/png;base64,${this.props.bad_image}`}
+                className="graphImageSquare"
+              />,
+              <img
+                src={`data:image/png;base64,${this.props.random_image}`}
+                className="graphImageSquare"
+              />,
+            ]}
+          />
+        )}
       </div>
     );
   }
@@ -121,11 +123,15 @@ class Overview extends React.Component {
         <h3>Symptom Summary</h3>
         <hr style={{ backgroundColor: "#6699CC", borderWidth: "2px" }} />
         <p>Data last updated: {this.props.time}</p>
-        <p>Normal Average Percent Time Asleep: {this.props.Normal_Anomaly[0]}%</p>
+        <p>
+          Normal Average Percent Time Asleep: {this.props.Normal_Anomaly[0]}%
+        </p>
         <p>Normal Total Wake Bouts: {this.props.Normal_Anomaly[1]}</p>
         <p>Bad Average Percent Time Asleep: {this.props.Bad_Anomaly[0]}%</p>
         <p>Bad Total Wake Bouts: {this.props.Bad_Anomaly[1]}</p>
-        <p>Random Average Percent Time Asleep: {this.props.Random_Anomaly[0]}%</p>
+        <p>
+          Random Average Percent Time Asleep: {this.props.Random_Anomaly[0]}%
+        </p>
         <p>Random Total Wake Bouts: {this.props.Random_Anomaly[1]}</p>
       </div>
     );
